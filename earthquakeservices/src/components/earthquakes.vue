@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div></div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
             this.getEarthQuakes()
         },
         getEarthQuakes(){
-            let URL = `http://api.geonames.org/earthquakesJSON?north=${this.north}&south=${this.south}&east=${this.east}&west=${this.west}&username=${config.GEOUSERNAME}`
+            let URL = `https://secure.geonames.org/earthquakesJSON?north=${this.north}&south=${this.south}&east=${this.east}&west=${this.west}&username=${config.GEOUSERNAME}`
             axios.get(URL)
                 .then((response)=>{
                     window.console.log(response.data)
