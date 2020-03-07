@@ -19,19 +19,25 @@ export default {
         }
     },
     methods:{
-        submit(){
-            window.console.log(this.item)
-        },
+        //CalculateBoundBox
+        //Parámetros: 1-Latitude: Latitud del punto de búsqueda de terremotos, 2-Longitude: Longitudo del punto de búsqueda de terremotos
+        //3- size: Tamaño en grados en el que se expanderá el area de búsqueda de terremotos a partir del punto inicial
         calculateBoundBox(latitude,longitude,size){
             window.console.log(latitude,longitude)
-            size = 3
             this.north = latitude + size;
+            if(this.north>90) this.north=90
             this.south = latitude - size;
+            if(this.south<-90) this.south=-90
             this.east = longitude + size;
+            if(this.east>180) this.east=180
             this.west = longitude - size;
+            if(this.west<-180) this.west=-180
             window.console.log(this.north,this.south,this.east,this.west)
             this.getEarthQuakes()
         },
+        //getEarthQuakes
+        //Esta función utiliza la librería axios para hacer un HTML request y obtener la información de los terremotos según el conjunto de coordendadas
+        //calculado previamente en la función calculateBoundBox
         getEarthQuakes(){
             let URL = `https://secure.geonames.org/earthquakesJSON?north=${this.north}&south=${this.south}&east=${this.east}&west=${this.west}&username=${config.GEOUSERNAME}`
             axios.get(URL)
@@ -50,10 +56,6 @@ export default {
                     window.console.log(error)
                 })
         }
-    },
-    mounted(){
-        //this.getEarthQuakes()
-        
     },
     
 }

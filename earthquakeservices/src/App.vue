@@ -27,9 +27,13 @@ export default {
     }
   },
   methods:{
+    
     sendCoordinates(){
       this.$refs.form.calculateBoundBox()
     },
+    //SendCoordinates2
+    //Parámetros: coordinates: diccionario que contiene la información de las coordenadas es decir las coordenedas.
+    //Envía un mensaje al módulo earthquakes para calcular las coordenadas que delimitan el area de los terremotos
     sendCoordinates2(coordinates){
       this.locationGeometry = coordinates
       this.coordinates = []
@@ -38,6 +42,9 @@ export default {
       window.console.log(this.latitude,this.longitude)
       this.$refs.form.calculateBoundBox(this.latitude,this.longitude,3)
     },
+    //Map Coordintaes
+    //Parámetros: coordinates: Arreglo de localicaciones(coordenadas,fechas,medidas) de los terremotos
+    //Se envía el arreglo de las coordenadas al módulo de Maps para generar los marcadores de los terremotos en el mapa
     mapCoordinates(coordinates){ 
       this.coordinates = coordinates
       this.$refs.mapper.createMarkers(this.locationGeometry,coordinates)

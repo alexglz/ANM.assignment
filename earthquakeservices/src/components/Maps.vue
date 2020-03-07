@@ -35,12 +35,16 @@ export default {
     
       };
     },
+    //init
+    //Función de generación del Mapa de Google.
+    //Además lee las locaciones generadas previamente para cargar los marcadores y la información de los cuadros dee texto
     async init(){
       try {
         const google = await gmaps();
         const geocoder = new google.maps.Geocoder();
         const map = new google.maps.Map(this.$el);
         this.geocoder= geocoder
+        //La primera vez el mapa hace un enfoque a México de maneda pre-definida
         if(!this.initialized){
           geocoder.geocode({ address: 'Mexico' }, (results, status) => {
             if (status !== 'OK' || !results[0]) {
@@ -51,7 +55,7 @@ export default {
           });
           this.initialized = true
         }else{
-          
+          //La segunda vez el enfoque se hace hacia la búsqueda que realizó el usuario
           let viewport = this.locationGeometry.viewport
           let northeast = new google.maps.LatLng(viewport.northeast.lat,viewport.northeast.lng)      
           let southwest = new google.maps.LatLng(viewport.southwest.lat,viewport.southwest.lng)
@@ -60,6 +64,7 @@ export default {
           map.fitBounds(bounds)
         }
 
+        //Se crea un event listener de click para los marcadores, el cual hace zoom y despliega su ventana de información
         const markerClickEvent = (marker)=>{
           map.setZoom(10);
           map.setCenter(marker.getPosition());
@@ -67,7 +72,6 @@ export default {
 
         this.mapInstance = map
         this.google = google
-        //this.locations.map(x => new google.maps.Marker({ ...x, map }));
         this.locations.map((location)=>{
           const marker = new google.maps.Marker({...location,map})
 
@@ -85,6 +89,11 @@ export default {
         console.error(error);
       }
     },
+    //Create markers
+    //Parámetros: origin:Contiene la información de la ciudad origen en la que se hizo la búsqueda, coordinates: arreglo de coordenadas que contiene información
+    // sobre los terremotos cercanos al punto de origen.
+    //Esta función desgloza la información que contiene el parámetro coordinates y la formatea según el API de GOOGLE Maps lo requiere, lo guarda en un nuevo arreglo
+    //de locaciones y vuelve a renderizar el mapa con la función init()
     createMarkers(origin,coordinates){  
       this.locationGeometry = origin
       this.locations = []

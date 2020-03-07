@@ -63,9 +63,13 @@ export default {
                 window.alert(error)
             })
         },
+        //SendCoordinatesToParent
+        //Envía un mensaje a la vista padre en el cual vienen las coordenadas de la ciudad buscada por el usuario
         sendCoordinatesToParent(){
             this.$emit("receiveLocationCoord",this.locationGeometry)
         },
+        //CheckField
+        //Verifica que el campo de "Ciudad" no esté vacío
         checkField(){
             if(!this.locationName){
                 this.isError = true
